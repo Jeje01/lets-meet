@@ -1,7 +1,6 @@
 "use client";
 
-import { Calendar, type CalendarProps } from "antd";
-import type { Dayjs } from "dayjs";
+import { Calendar } from "antd";
 
 const Main: React.FC = () => {
 

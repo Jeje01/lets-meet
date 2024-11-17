@@ -22,7 +22,7 @@ export default function Home() {
         />
         일정 생성하기
       </Button>
-      <div className="h-[400px] shadow-lg w-[400px] shadow-black rounded-[18px]">
+      <div className="h-[400px] shadow-lg w-[400px] shadow-black rounded-[18px] relative overflow-hidden">
         <Button type="full" handleClick={() => (location.href = "/")}>
           일정
         </Button>
