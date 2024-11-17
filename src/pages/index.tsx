@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components";
+import { Button, Tags } from "@/components";
 import Image from "next/image";
 
 export default function Home() {
@@ -26,6 +26,10 @@ export default function Home() {
         <Button type="full" handleClick={() => (location.href = "/")}>
           일정
         </Button>
+      </div>
+      <div className="w-[400px] h-[200px] p-4 bg-black">
+       <Tags tags={["tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3" ]} />
+
       </div>
     </div>
   );
