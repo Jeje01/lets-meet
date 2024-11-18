@@ -7,7 +7,7 @@ export const ToggleButton = ({
   text: string;
   onClick: VoidFunction;
 }) => {
-  const commonStyle = "rounded-[18px] py-3 flex justify-center text-lg";
+  const commonStyle = "rounded-[18px] py-3 flex justify-center text-lg w-full";
 
   const clickedStyle = clicked
     ? "bg-[#ff570f] text-white text-bold"

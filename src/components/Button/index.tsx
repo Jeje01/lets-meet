@@ -1,5 +1,4 @@
 import { ButtonType } from "@/types";
-import { ReactNode } from "react";
 import { match } from "ts-pattern";
 
 // TODO: disabled 상태 추가
@@ -27,17 +26,23 @@ export const Button = ({
   children,
   handleClick,
   type,
+  htmlType = "button",
+  style,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   handleClick: VoidFunction;
   type: ButtonType;
+  htmlType?: "button" | "submit" | "reset";
+  style?: React.CSSProperties;
 }) => {
   const buttonStyle = getButtonStyle(type);
 
   return (
     <button
+      type={htmlType}
       className={`w-fit box-border flex justify-center items-center ${buttonStyle}`}
       onClick={handleClick}
+      style={style}
     >
       {children}
     </button>
