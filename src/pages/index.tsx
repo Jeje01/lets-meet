@@ -1,12 +1,13 @@
 "use client";
 
-import { ArrowButton, Button, Tags } from "@/components";
+import { ArrowButton, Button, Input, Tags } from "@/components";
 import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
   const [opened, setOpened] = useState(false);
+  const [value, setValue] = useState("");
 
   return (
     <div className="w-full h-full bg-white items-center pt-20 flex flex-col gap-2">
@@ -28,7 +29,7 @@ export default function Home() {
           일정
         </Button>
       </div>
-      <div className="w-[400px] h-[200px] p-4 bg-black">
+      <div className="w-[400px] h-[500px] p-4 bg-black">
         <Tags
           tags={[
             "tag1",
@@ -49,6 +50,13 @@ export default function Home() {
         <NumberTag num={2} />
         <NumberTag num={3} />
         <ArrowButton opened={opened} onClick={() => setOpened(!opened)} />
+        <Input
+          placeholder="placeholder"
+          value={value}
+          setValue={setValue}
+          hasButton
+          buttonText="입력"
+        />
       </div>
     </div>
   );
