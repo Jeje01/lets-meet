@@ -5,6 +5,7 @@ import {
   Button,
   Input,
   Label,
+  Modal,
   NavigationBar,
   Tags,
   Toast,
@@ -17,6 +18,7 @@ export default function Home() {
   const [opened, setOpened] = useState(false);
   const [value, setValue] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleShowToast = () => {
     setShowToast(true);
@@ -38,11 +40,6 @@ export default function Home() {
         />
         일정 생성하기
       </Button>
-      <div className="h-[400px] shadow-lg w-[400px] shadow-black rounded-[18px] relative overflow-hidden">
-        <Button type="full" handleClick={() => (location.href = "/")}>
-          일정
-        </Button>
-      </div>
       <div className="w-[400px] h-[300px] p-4 bg-black">
         <Tags
           tags={[
@@ -86,6 +83,21 @@ export default function Home() {
           onClose={() => setShowToast(false)}
         />
       )}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Open Modal
+      </button>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        buttonText="일정 선택하기"
+        onButtonClick={() => console.log("button clicked")}
+      >
+        <h2 className="text-xl font-bold mb-4">모달 제목</h2>
+        <p>모달입니당</p>
+      </Modal>
     </div>
   );
 }
