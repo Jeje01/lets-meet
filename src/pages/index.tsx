@@ -7,6 +7,7 @@ import {
   Label,
   NavigationBar,
   Tags,
+  Toast,
 } from "@/components";
 import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
@@ -15,9 +16,14 @@ import { useState } from "react";
 export default function Home() {
   const [opened, setOpened] = useState(false);
   const [value, setValue] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  const handleShowToast = () => {
+    setShowToast(true);
+  };
 
   return (
-    <div className="w-full h-full bg-white items-center flex flex-col gap-2">
+    <div className="w-full h-full bg-white items-center flex flex-col gap-2 p-8">
       <NavigationBar title="일정 생성하기" />
       <Button type="small" handleClick={() => (location.href = "/")}>
         About
@@ -67,6 +73,19 @@ export default function Home() {
         />
       </div>
       <Label text="어떤 일정을 잡을까요?" />
+      <button
+        onClick={handleShowToast}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Show Toast
+      </button>
+      {showToast && (
+        <Toast
+          message="투표를 완료했어요"
+          duration={3000}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }

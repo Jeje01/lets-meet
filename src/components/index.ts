@@ -7,3 +7,4 @@ export * from "./Tags";
 export * from "./ToggleButton";
 export * from "./Label";
 export * from "./Navigation";
+export * from "./Toast";
