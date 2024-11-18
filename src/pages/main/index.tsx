@@ -3,7 +3,6 @@
 import { Calendar } from "antd";
 
 const Main: React.FC = () => {
-
   return (
     <div>
       <Calendar />

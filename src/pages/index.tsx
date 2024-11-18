@@ -1,15 +1,15 @@
 "use client";
 
-import { Button, Tags } from "@/components";
+import { ArrowButton, Button, Tags } from "@/components";
 import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
-  //
+  const [opened, setOpened] = useState(false);
+
   return (
     <div className="w-full h-full bg-white items-center pt-20 flex flex-col gap-2">
-      {/* <div className="w-[400px]"> */}
-      {/* <Calendar fullscreen={false} /> */}
       <Button type="small" handleClick={() => (location.href = "/")}>
         About
       </Button>
@@ -29,12 +29,27 @@ export default function Home() {
         </Button>
       </div>
       <div className="w-[400px] h-[200px] p-4 bg-black">
-       <Tags tags={["tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3" ]} />
+        <Tags
+          tags={[
+            "tag1",
+            "tag2",
+            "tag3",
+            "tag1",
+            "tag2",
+            "tag3",
+            "tag1",
+            "tag2",
+            "tag3",
+            "tag1",
+            "tag2",
+            "tag3",
+          ]}
+        />
+        <NumberTag num={1} />
+        <NumberTag num={2} />
+        <NumberTag num={3} />
+        <ArrowButton opened={opened} onClick={() => setOpened(!opened)} />
       </div>
-      <NumberTag num={1} />
-      <NumberTag num={2} />
-      <NumberTag num={3} />
-
     </div>
   );
 }
