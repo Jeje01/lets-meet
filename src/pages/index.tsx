@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowButton, Button, Input, Label, Tags } from "@/components";
+import {
+  ArrowButton,
+  Button,
+  Input,
+  Label,
+  NavigationBar,
+  Tags,
+} from "@/components";
 import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
 import { useState } from "react";
@@ -10,7 +17,8 @@ export default function Home() {
   const [value, setValue] = useState("");
 
   return (
-    <div className="w-full h-full bg-white items-center pt-20 flex flex-col gap-2">
+    <div className="w-full h-full bg-white items-center flex flex-col gap-2">
+      <NavigationBar title="일정 생성하기" />
       <Button type="small" handleClick={() => (location.href = "/")}>
         About
       </Button>
