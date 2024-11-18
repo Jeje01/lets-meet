@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Tags } from "@/components";
+import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
 
 export default function Home() {
@@ -29,8 +30,11 @@ export default function Home() {
       </div>
       <div className="w-[400px] h-[200px] p-4 bg-black">
        <Tags tags={["tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3","tag1", "tag2", "tag3" ]} />
-
       </div>
+      <NumberTag num={1} />
+      <NumberTag num={2} />
+      <NumberTag num={3} />
+
     </div>
   );
 }

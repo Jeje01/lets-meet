@@ -2,6 +2,7 @@ import { ButtonType } from "@/types";
 import { ReactNode } from "react";
 import { match } from "ts-pattern";
 
+// TODO: disabled 상태 추가
 const getButtonStyle = (buttonType: ButtonType) => {
   return match(buttonType)
     .with(
