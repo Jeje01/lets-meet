@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowButton, Button, Input, Tags } from "@/components";
+import { ArrowButton, Button, Input, Label, Tags } from "@/components";
 import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
 import { useState } from "react";
@@ -29,7 +29,7 @@ export default function Home() {
           일정
         </Button>
       </div>
-      <div className="w-[400px] h-[500px] p-4 bg-black">
+      <div className="w-[400px] h-[300px] p-4 bg-black">
         <Tags
           tags={[
             "tag1",
@@ -58,6 +58,7 @@ export default function Home() {
           buttonText="입력"
         />
       </div>
+      <Label text="어떤 일정을 잡을까요?" />
     </div>
   );
 }
