@@ -8,4 +8,4 @@ export const Tags = ({ tags }: { tags: string[] }) => {
       ))}
     </ul>
   );
-}
+};

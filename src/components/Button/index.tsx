@@ -15,7 +15,10 @@ const getButtonStyle = (buttonType: ButtonType) => {
       () =>
         "w-full rounded-[18px] text-black bg-[#FF570F] p-5 text-lg font-bold",
     )
-    .with("full", () => "absolute bottom-0 w-full bg-[#FF570F] p-5 text-lg font-bold")
+    .with(
+      "full",
+      () => "absolute bottom-0 w-full bg-[#FF570F] p-5 text-lg font-bold",
+    )
     .otherwise(() => "");
 };
 
