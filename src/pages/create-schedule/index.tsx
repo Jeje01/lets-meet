@@ -6,6 +6,8 @@ import {
   NavigationBar,
   ToggleButton,
 } from "@/components";
+import TermSelector from "@/components/TermSelector";
+import { format } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -16,30 +18,58 @@ const CreateSchedule = () => {
 
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
-      name: "",
-      scheduleType: "named",
+      scheduleName: "",
+      isNamedVote: true,
+      period: { startDate: null, endDate: null },
     },
   });
 
-  const scheduleType = watch("scheduleType");
+  const scheduleType = watch("isNamedVote");
+  const period = watch("period");
 
   useEffect(() => {
     console.log(isModalOpen);
   }, [isModalOpen]);
 
-  const onSubmit = (data: { name: string; scheduleType: string }) => {
-    // API 호출
+  const onSubmit = (data: {
+    scheduleName: string;
+    isNamedVote: boolean;
+    period: { startDate: Date | null; endDate: Date | null };
+  }) => {
+    // Transforming data into desired JSON structure
+    const payload = {
+      scheduleName: data.scheduleName,
+      isNamedVote: data.isNamedVote,
+      period: {
+        start: data.period.startDate
+          ? format(data.period.startDate, "yyyy-MM-dd")
+          : null,
+        end: data.period.endDate
+          ? format(data.period.endDate, "yyyy-MM-dd")
+          : null,
+      },
+    };
+
+    console.log("Payload:", payload);
+
+    // API 호출 예제
+    // fetch('/api/schedules', {
+    //   method: 'POST',
+    //   body: JSON.stringify(payload),
+    //   headers: { 'Content-Type': 'application/json' },
+    // });
+
     push("/vote-schedule?code=1234");
   };
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] h-full">
+    <div className="pt-[70px] bg-[#E8E6EF] h-full pb-[140px]">
       <NavigationBar title="일정 생성하기" />
       <div className="px-[24px]">
         <form>
           <Label text="어떤 일정을 잡을까요?" />
           <Controller
-            name="name"
+            name="scheduleName"
             control={control}
             render={({ field }) => (
               <Input
@@ -49,17 +79,30 @@ const CreateSchedule = () => {
               />
             )}
           />
+          <Label text="날짜를 선택해주세요" />
+          <Controller
+            name="period"
+            control={control}
+            render={({ field }) => (
+              <TermSelector
+                value={field.value}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+              />
+            )}
+          />
           <Label text="일정 유형을 선택하세요" />
           <div className="flex w-full gap-[10px]">
             <ToggleButton
               text="기명 투표"
-              clicked={scheduleType === "named"}
-              onClick={() => setValue("scheduleType", "named")}
+              clicked={scheduleType}
+              onClick={() => setValue("isNamedVote", true)}
             />
             <ToggleButton
               text="익명 투표"
-              clicked={scheduleType === "anonymous"}
-              onClick={() => setValue("scheduleType", "anonymous")}
+              clicked={!scheduleType}
+              onClick={() => setValue("isNamedVote", false)}
             />
           </div>
           <Button
@@ -91,16 +134,26 @@ const CreateSchedule = () => {
           <h3 className="text-[#27232e] text-[16px] font-bold mb-[10px]">
             약속 제목
           </h3>
-          <p className="mb-6 font-normal text-[14px]">{watch("name")}</p>
+          <p className="mb-6 font-normal text-[14px]">
+            {watch("scheduleName") || "입력되지 않음"}
+          </p>
           <h3 className="text-[#27232e] text-[16px] font-bold mb-[10px]">
             투표 범위
           </h3>
-          <p className="mb-6 font-normal text-[14px]">에베베베베</p>
+          <p className="mb-6 font-normal text-[14px]">
+            {period.startDate
+              ? `${format(period.startDate, "yyyy-MM-dd")} ~ ${
+                  period.endDate
+                    ? format(period.endDate, "yyyy-MM-dd")
+                    : "종료 날짜 없음"
+                }`
+              : "날짜를 선택하세요"}
+          </p>
           <h3 className="text-[#27232e] text-[16px] font-bold mb-[10px]">
             투표 공개 설정
           </h3>
           <p className="mb-6 font-normal text-[14px]">
-            {watch("scheduleType") === "named" ? "기명 투표" : "익명 투표"}
+            {scheduleType ? "기명 투표" : "익명 투표"}
           </p>
         </div>
       </Modal>

@@ -1,5 +1,6 @@
 export * from "./ArrowButton";
 export * from "./Button";
+export * from "./TermSelector";
 export * from "./Input";
 export * from "./Label";
 export * from "./Modal";
@@ -9,4 +10,3 @@ export * from "./Tag";
 export * from "./Tags";
 export * from "./Toast";
 export * from "./ToggleButton";
-
