@@ -20,7 +20,7 @@ interface TermSelectorProps {
 }
 
 const TermSelector: React.FC<TermSelectorProps> = React.memo(
-  ({ value, onChange }) => {
+  function TermSelector({ value, onChange }) {
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
     const today = useMemo(() => new Date(), []);

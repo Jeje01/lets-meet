@@ -9,7 +9,7 @@ export default function Home() {
   const { push } = useRouter();
   const [value, setValue] = useState("");
   return (
-    <div className="p-6 bg-[#FFF6E4] h-full">
+    <div className="p-6 bg-[#FFF6E4] h-screen">
       <div className="float-right mb-20">
         <Button
           type="small"
