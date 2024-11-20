@@ -1,7 +1,11 @@
 import { Button, Input, Label, Modal, NavigationBar } from "@/components";
 import Calendar from "@/components/Calendar";
 import DateVoter from "@/components/DateVoters";
-import { useMemo, useState } from "react";
+import useGetSchedule from "@/queries/useGetSchedule";
+import useLogin from "@/queries/useLogin";
+import useUpdateSchedule from "@/queries/useUpdateSchedule";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 interface FormValues {
@@ -10,15 +14,29 @@ interface FormValues {
 }
 
 const VoteSchedule = () => {
-  const title = "2024 하반기 워크샵";
+  const { query } = useRouter();
+  const scheduleId = query.code as string;
+  const { data, isLoading, isError } = useGetSchedule(scheduleId);
+  const { mutate: updateSchedule } = useUpdateSchedule();
+  const { mutate: login } = useLogin();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string[]>([]); // 초기값 함수 사용
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const [selectedDate, setSelectedDate] = useState<string[]>([]);
+  const [token, setToken] = useState<string | null>(null);
+
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       id: "",
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }
+  }, []);
 
   const updatedSelectedDate = (date: string) => {
     if (selectedDate.includes(date)) {
@@ -30,45 +48,93 @@ const VoteSchedule = () => {
     }
   };
 
-  const handleClickSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
-    setIsModalOpen(false);
+  const handleUpdateSchedule = () => {
+    if (!selectedDate.length) return;
+
+    updateSchedule(
+      { id: scheduleId, votes: selectedDate },
+      {
+        onSuccess: () => {
+          console.log("성공");
+        },
+        onError: (error) => {
+          console.error("error:", error.message);
+        },
+      },
+    );
   };
 
-  const votes: { [key: string]: string[] } = useMemo(
-    () => ({
-      "2024-11-05": ["user1", "user2", "user3", "user4"],
-      "2024-11-07": ["user3"],
-    }),
-    [],
-  );
+  const handleLoginAndUpdate = (formData: FormValues) => {
+    login(
+      {
+        username: formData.id,
+        password: formData.password,
+        scheduleId,
+      },
+      {
+        onSuccess: (response) => {
+          const receivedToken = response.token;
+          console.log(receivedToken);
+          setToken(receivedToken);
+
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", receivedToken);
+          }
+
+          handleUpdateSchedule();
+          setIsModalOpen(false);
+        },
+        onError: (error) => {
+          console.error("Login failed:", error.message);
+        },
+      },
+    );
+  };
+
+  const handleButtonClick = () => {
+    if (token) {
+      handleUpdateSchedule();
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  if (isLoading) {
+    return <p>로딩 중...</p>;
+  }
+
+  if (isError || !data) {
+    return <p>일정 없음</p>;
+  }
 
   return (
     <div className="pt-[70px] bg-[#E8E6EF] h-full pb-[140px] min-h-fit">
       <NavigationBar title="일정 투표하기" />
       <div className="p-6">
-        <h1 className="text-[44px] mb-[44px] font-bold break-keep">{title}</h1>
+        <h1 className="text-[44px] mb-[44px] font-bold break-keep">
+          {data.scheduleName}
+        </h1>
         <Calendar
           period={{
-            start: "2024-11-01",
-            end: "2024-12-01",
+            start: data.period.start,
+            end: data.period.end,
           }}
-          votes={votes}
+          votes={data.votes}
           selectedDate={selectedDate}
           updatedSelectedDate={updatedSelectedDate}
         />
         <div className="flex items-center justify-between">
           <Label text="투표 결과" />
           <p className="min-w-fit mt-[36px] mb-[12px] font-[400] text-[#797979] text-[12px]">
-            총 {Object.keys(votes).length}명 투표 완료
+            총 {Object.keys(data.votes).length}명 투표 완료
           </p>
         </div>
-        {Object.keys(votes).map((date, index) => (
+        {Object.keys(data.votes).map((date, index) => (
           <DateVoter
             key={date}
             rank={index + 1}
             date={date}
-            voters={votes[date]}
+            voters={data.votes[date]}
           />
         ))}
       </div>
@@ -80,7 +146,7 @@ const VoteSchedule = () => {
           left: 24,
           width: "calc(100% - 48px)",
         }}
-        handleClick={() => setIsModalOpen(true)}
+        handleClick={handleButtonClick}
         htmlType="button"
         disabled={!selectedDate.length}
       >
@@ -92,31 +158,34 @@ const VoteSchedule = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         buttonText="로그인하기"
-        onButtonClick={handleSubmit(handleClickSubmit)}
+        onButtonClick={handleSubmit(handleLoginAndUpdate)}
       >
         <h2 className="text-xl font-bold mb-6">로그인하기</h2>
-        <Controller
-          name="id"
-          control={control}
-          render={({ field }) => (
-            <Input
-              placeholder="아이디"
-              value={field.value}
-              setValue={field.onChange}
-            />
-          )}
-        />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <Input
-              placeholder="비밀번호"
-              value={field.value}
-              setValue={field.onChange}
-            />
-          )}
-        />
+        <div className="pb-[24px] flex flex-col gap-4">
+          <Controller
+            name="id"
+            control={control}
+            render={({ field }) => (
+              <Input
+                placeholder="아이디"
+                value={field.value}
+                setValue={field.onChange}
+              />
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input
+                placeholder="비밀번호"
+                value={field.value}
+                setValue={field.onChange}
+                password
+              />
+            )}
+          />
+        </div>
       </Modal>
     </div>
   );

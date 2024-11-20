@@ -27,7 +27,6 @@ const Calendar: React.FC<CalendarProps> = ({
   selectedDate,
   updatedSelectedDate,
 }) => {
-
   const startDate = new Date(period.start);
   const endDate = new Date(period.end);
 

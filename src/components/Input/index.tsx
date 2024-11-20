@@ -6,6 +6,7 @@ export const Input = ({
   buttonText,
   onClick,
   disabled = true,
+  password = false,
 }: {
   placeholder: string;
   value: string;
@@ -14,6 +15,7 @@ export const Input = ({
   buttonText?: string;
   onClick?: VoidFunction;
   disabled?: boolean;
+  password?: boolean;
 }) => {
   const buttonStyle = disabled
     ? "bg-[#d5d5d5] font-normal text-[#797979]"
@@ -22,7 +24,7 @@ export const Input = ({
   return (
     <div className="relative">
       <input
-        type="text"
+        type={password ? "password" : "text"}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}

@@ -52,9 +52,15 @@ const CreateSchedule = () => {
       },
     };
 
-    mutate(payload);
-
-    push("/vote-schedule?code=1234");
+    mutate(payload, {
+      onSuccess: (response) => {
+        const scheduleId = response.scheduleId;
+        push(`/vote-schedule?code=${scheduleId}`);
+      },
+      onError: () => {
+        message.error("일정 생성 중 문제가 발생했습니다.");
+      },
+    });
   };
 
   return (
