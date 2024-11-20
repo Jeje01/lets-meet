@@ -20,6 +20,10 @@ export default function Playground() {
   const [showToast, setShowToast] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleRangeSelect = (startDate: Date | null, endDate: Date | null) => {
+    console.log("Selected range:", { startDate, endDate });
+  };
+
   const handleShowToast = () => {
     setShowToast(true);
   };

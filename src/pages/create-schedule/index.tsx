@@ -7,6 +7,8 @@ import {
   ToggleButton,
 } from "@/components";
 import TermSelector from "@/components/TermSelector";
+import useCreateSchedule from "@/queries/useCreateSchedule";
+import { message } from "antd";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 const CreateSchedule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { push } = useRouter();
+  const { mutate } = useCreateSchedule();
 
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
@@ -36,34 +39,26 @@ const CreateSchedule = () => {
     isNamedVote: boolean;
     period: { startDate: Date | null; endDate: Date | null };
   }) => {
-    // Transforming data into desired JSON structure
+    if (!data.scheduleName || !data.period.startDate || !data.period.endDate) {
+      message.error("모든 항목을 입력해주세요.");
+      return;
+    }
     const payload = {
       scheduleName: data.scheduleName,
       isNamedVote: data.isNamedVote,
       period: {
-        start: data.period.startDate
-          ? format(data.period.startDate, "yyyy-MM-dd")
-          : null,
-        end: data.period.endDate
-          ? format(data.period.endDate, "yyyy-MM-dd")
-          : null,
+        start: format(data?.period?.startDate, "yyyy-MM-dd"),
+        end: format(data?.period?.endDate, "yyyy-MM-dd"),
       },
     };
 
-    console.log("Payload:", payload);
-
-    // API 호출 예제
-    // fetch('/api/schedules', {
-    //   method: 'POST',
-    //   body: JSON.stringify(payload),
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
+    mutate(payload);
 
     push("/vote-schedule?code=1234");
   };
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] h-full pb-[140px]">
+    <div className="pt-[70px] bg-[#E8E6EF] min-h-full pb-[140px]">
       <NavigationBar title="일정 생성하기" />
       <div className="px-[24px]">
         <form>
