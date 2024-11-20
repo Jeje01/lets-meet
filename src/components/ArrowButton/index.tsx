@@ -5,7 +5,7 @@ export const ArrowButton = ({
   onClick,
 }: {
   opened: boolean;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
 }) => {
   return (
     <button
