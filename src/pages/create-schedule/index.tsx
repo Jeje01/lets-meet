@@ -109,6 +109,9 @@ const CreateSchedule = () => {
             }}
             handleClick={() => setIsModalOpen(true)}
             htmlType="button"
+            disabled={
+              !watch("scheduleName") || !period.startDate || !period.endDate
+            }
           >
             일정 생성하기
           </Button>

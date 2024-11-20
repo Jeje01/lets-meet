@@ -28,19 +28,22 @@ export const Button = ({
   type,
   htmlType = "button",
   style,
+  disabled,
 }: {
   children: React.ReactNode;
   handleClick: VoidFunction;
   type: ButtonType;
   htmlType?: "button" | "submit" | "reset";
   style?: React.CSSProperties;
+  disabled?: boolean;
 }) => {
   const buttonStyle = getButtonStyle(type);
+  const disabledStyle = "bg-[#b3aec2] text-[#5d586b]";
 
   return (
     <button
       type={htmlType}
-      className={`w-fit box-border flex justify-center items-center ${buttonStyle}`}
+      className={`w-fit box-border flex justify-center items-center ${buttonStyle} ${disabled ? disabledStyle : ""}`}
       onClick={handleClick}
       style={style}
     >

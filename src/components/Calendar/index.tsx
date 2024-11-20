@@ -11,16 +11,22 @@ import React, { useCallback, useMemo, useState } from "react";
 
 interface CalendarProps {
   period: {
-    start: string; // yyyy-MM-dd
-    end: string; // yyyy-MM-dd
+    start: string;
+    end: string;
   };
   votes: {
-    [date: string]: string[]; // key: yyyy-MM-dd, value: array of user IDs
+    [date: string]: string[];
   };
+  selectedDate: string[];
+  updatedSelectedDate: (date: string) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ period, votes }) => {
-  const [selectedDate, setSelectedDate] = useState<string[]>([]);
+const Calendar: React.FC<CalendarProps> = ({
+  period,
+  votes,
+  selectedDate,
+  updatedSelectedDate,
+}) => {
 
   const startDate = new Date(period.start);
   const endDate = new Date(period.end);
@@ -36,13 +42,7 @@ const Calendar: React.FC<CalendarProps> = ({ period, votes }) => {
   const handleDayClick = useCallback((day: Date) => {
     const formattedDate = format(day, "yyyy-MM-dd");
 
-    setSelectedDate((prevSelectedDate) => {
-      if (prevSelectedDate.includes(formattedDate)) {
-        return prevSelectedDate.filter((date) => date !== formattedDate);
-      } else {
-        return [...prevSelectedDate, formattedDate];
-      }
-    });
+    updatedSelectedDate(formattedDate);
   }, []);
 
   const handlePrevMonth = useCallback(

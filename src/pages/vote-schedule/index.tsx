@@ -1,7 +1,7 @@
 import { Button, Input, Label, Modal, NavigationBar } from "@/components";
 import Calendar from "@/components/Calendar";
 import DateVoter from "@/components/DateVoters";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 interface FormValues {
@@ -12,7 +12,7 @@ interface FormValues {
 const VoteSchedule = () => {
   const title = "2024 하반기 워크샵";
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string[]>([]); // 초기값 함수 사용
   const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
       id: "",
@@ -20,15 +20,28 @@ const VoteSchedule = () => {
     },
   });
 
+  const updatedSelectedDate = (date: string) => {
+    if (selectedDate.includes(date)) {
+      setSelectedDate((prevSelectedDate) =>
+        prevSelectedDate.filter((d) => d !== date),
+      );
+    } else {
+      setSelectedDate((prevSelectedDate) => [...prevSelectedDate, date]);
+    }
+  };
+
   const handleClickSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
     setIsModalOpen(false);
   };
 
-  const votes: { [key: string]: string[] } = {
-    "2024-11-05": ["user1", "user2", "user3", "user4"],
-    "2024-11-07": ["user3"],
-  };
+  const votes: { [key: string]: string[] } = useMemo(
+    () => ({
+      "2024-11-05": ["user1", "user2", "user3", "user4"],
+      "2024-11-07": ["user3"],
+    }),
+    [],
+  );
 
   return (
     <div className="pt-[70px] bg-[#E8E6EF] h-full pb-[140px] min-h-fit">
@@ -42,12 +55,12 @@ const VoteSchedule = () => {
           }}
           votes={votes}
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
+          updatedSelectedDate={updatedSelectedDate}
         />
         <div className="flex items-center justify-between">
           <Label text="투표 결과" />
           <p className="min-w-fit mt-[36px] mb-[12px] font-[400] text-[#797979] text-[12px]">
-            총 n명 투표 완료
+            총 {Object.keys(votes).length}명 투표 완료
           </p>
         </div>
         {Object.keys(votes).map((date, index) => (
