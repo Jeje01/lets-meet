@@ -84,13 +84,13 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
         if (isSelectedStart && isSelectedEnd) label = "시작/끝";
         else if (isSelectedStart) label = "시작";
         else if (isSelectedEnd) label = "끝";
-        else if (isInRange) label = "범위";
         else if (isToday) label = "오늘";
+        else if (isInRange) label = "";
 
         days.push(
           <div
             key={normalizedDay.toString()}
-            className={`p-2 text-center text-[14px] cursor-pointer ${
+            className={`relative flex flex-col items-center justify-center w-[40px] h-[40px] text-center text-[14px] cursor-pointer ${
               isDisabled
                 ? "text-gray-300 cursor-not-allowed"
                 : "hover:bg-gray-200"
@@ -98,13 +98,16 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
               isSelectedStart || isSelectedEnd
                 ? "bg-[#FF570F] text-black rounded-full"
                 : isInRange
-                  ? "bg-[#FFDCCC] text-[#E53509]"
+                  ? "bg-[#FFDCCC] text-[#E53509] rounded-none"
                   : ""
             } ${isToday ? "bg-white text-[#E53509] font-bold rounded-full" : ""}`}
+            style={{
+              aspectRatio: "1 / 1",
+            }}
             onClick={() => !isDisabled && handleDayClick(normalizedDay)}
           >
             <div>{format(normalizedDay, "d")}</div>
-            <div className="text-[7px] mt-[-5px]">{label}</div>
+            <div className="text-[7px] mt-1">{label}</div>
           </div>,
         );
         day = addDays(day, 1);
@@ -114,7 +117,7 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
     }, [currentMonth, normalizeDate, today, value, handleDayClick]);
 
     return (
-      <div className="w-80 border rounded-lg shadow-lg p-4 bg-[#F3F2F8]">
+      <div className="w-full max-w-[420px] border rounded-lg shadow-lg p-4 bg-[#F3F2F8]">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">
             {format(currentMonth, "yyyy년 MM월", { locale: ko })}
@@ -141,7 +144,9 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
           ))}
         </div>
 
-        <div className="grid grid-cols-7">{renderDays}</div>
+        <div className="grid grid-cols-7 gap-0 justify-items-center items-center">
+          {renderDays}
+        </div>
       </div>
     );
   },

@@ -12,7 +12,7 @@ const getButtonStyle = (buttonType: ButtonType) => {
     .with(
       "regular",
       () =>
-        "w-full rounded-[18px] text-black bg-[#FF570F] p-5 text-lg font-bold",
+        "w-full rounded-[18px] text-black bg-[#FF570F] p-5 text-lg font-bold max-w-[376px]",
     )
     .with(
       "full",

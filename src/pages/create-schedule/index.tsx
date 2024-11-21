@@ -51,7 +51,7 @@ const CreateSchedule = () => {
   };
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] min-h-full pb-[140px]">
+    <div className="pt-[70px] bg-[#E8E6EF] max-w-[420px] pb-[140px] w-full h-full min-h-fit">
       <NavigationBar title="일정 생성하기" />
       <div className="px-[24px]">
         <Label text="어떤 일정을 잡을까요?" />

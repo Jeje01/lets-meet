@@ -7,9 +7,15 @@ interface DateVoterProps {
   rank: number;
   date: string;
   voters: string[];
+  isAnonymous?: boolean;
 }
 
-export const DateVoter = ({ rank, date, voters }: DateVoterProps) => {
+export const DateVoter = ({
+  rank,
+  date,
+  voters,
+  isAnonymous,
+}: DateVoterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -42,9 +48,9 @@ export const DateVoter = ({ rank, date, voters }: DateVoterProps) => {
             </span>
             <span className="text-[14px] font-normal text-black">투표</span>
           </div>
-          <ArrowButton opened={isOpen} />
+          {!isAnonymous && <ArrowButton opened={isOpen} />}
         </button>
-        {isOpen && (
+        {isOpen && !isAnonymous && (
           <div className="p-[20px]">
             <Tags tags={voters} />
           </div>

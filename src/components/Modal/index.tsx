@@ -35,7 +35,7 @@ export const Modal = ({
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-[18px] shadow-lg p-6 w-[90%] pb-[68px] max-w-md transform transition-transform duration-300"
+        className="relative bg-white rounded-[18px] shadow-lg p-6 w-[90%] pb-[68px] max-w-[376px] transform transition-transform duration-300"
         onClick={(e) => e.stopPropagation()}
         style={{
           transform: isOpen ? "translateY(0)" : "translateY(20px)",

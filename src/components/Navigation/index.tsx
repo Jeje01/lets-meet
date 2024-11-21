@@ -17,7 +17,7 @@ export const NavigationBar = ({
   };
 
   return (
-    <div className="w-full h-[56px] top-0 flex items-center px-4 bg-[#E8E6EF] shadow-md fixed z-50">
+    <div className="w-[420px] h-[56px] top-0 flex items-center px-4 bg-[#E8E6EF] shadow-md fixed z-50">
       {showBackButton && (
         <button onClick={handleBackClick}>
           <Image src="/img/back.png" alt="뒤로가기" width={24} height={24} />

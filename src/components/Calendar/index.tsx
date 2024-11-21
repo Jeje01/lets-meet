@@ -85,16 +85,18 @@ export const Calendar: React.FC<CalendarProps> = ({
       days.push(
         <div
           key={normalizedDay.toString()}
-          className={`p-2 text-center text-[14px] cursor-pointer ${
+          className={`relative p-1 sm:p-2 text-center text-[14px] cursor-pointer ${
             isDisabled
               ? "text-gray-300 cursor-not-allowed"
               : "hover:bg-gray-200"
           } ${!isDisabled ? "rounded-full" : ""} ${
-            isSelected ? "border-black border-2" : ""
-          }
-          `}
+            isSelected ? "border-2 border-black" : "border-2 border-transparent"
+          }`}
           style={{
             backgroundColor: !isDisabled ? backgroundColor : undefined,
+            boxSizing: "border-box",
+            width: "40px",
+            height: "40px",
           }}
           onClick={() => !isDisabled && handleDayClick(normalizedDay)}
         >
@@ -108,7 +110,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   }, [currentMonth, normalizeDate, startDate, endDate, votes, handleDayClick]);
 
   return (
-    <div className="w-80 border rounded-lg shadow-lg p-4 bg-[#F3F2F8]">
+    <div className="w-full border rounded-lg shadow-lg p-4 bg-[#F3F2F8]">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">
           {format(currentMonth, "yyyy년 MM월")}
@@ -135,7 +137,9 @@ export const Calendar: React.FC<CalendarProps> = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-7">{renderDays}</div>
+      <div className="grid grid-cols-7 gap-[2px] sm:gap-[4px]">
+        {renderDays}
+      </div>
     </div>
   );
 };

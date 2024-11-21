@@ -46,7 +46,7 @@ const VoteSchedule = () => {
       setToken(storedToken);
     }
   }, []);
-  
+
   const handleUpdateSchedule = () => {
     if (!selectedDate.length || !token) return;
 
@@ -111,7 +111,7 @@ const VoteSchedule = () => {
   }
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] h-full pb-[140px] min-h-fit">
+    <div className="pt-[70px] bg-[#E8E6EF] w-full max-w-[420px] h-full pb-[140px] min-h-fit">
       <NavigationBar title="일정 투표하기" />
       <div className="p-6">
         <h1 className="text-[44px] mb-[44px] font-bold break-keep">
@@ -138,6 +138,7 @@ const VoteSchedule = () => {
             rank={index + 1}
             date={date}
             voters={data.votes[date]}
+            isAnonymous={!data.isNamedVote}
           />
         ))}
       </div>
@@ -146,7 +147,8 @@ const VoteSchedule = () => {
         style={{
           position: "fixed",
           bottom: 24,
-          left: 24,
+          left: "50%",
+          transform: "translateX(-50%)",
           width: "calc(100% - 48px)",
         }}
         handleClick={handleButtonClick}
