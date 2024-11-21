@@ -7,10 +7,10 @@ import {
   Label,
   Modal,
   NavigationBar,
+  NumberTag,
   Tags,
   Toast,
 } from "@/components";
-import { NumberTag } from "@/components/NumberTag";
 import Image from "next/image";
 import { useState } from "react";
 

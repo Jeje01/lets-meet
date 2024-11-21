@@ -3,30 +3,26 @@ import { useMutation } from "@tanstack/react-query";
 
 interface LoginRequest {
   username: string;
-  scheduleId: string;
   password: string;
-}
-
-interface LoginResponse {
-  token: string; // JWT 토큰
+  scheduleId: string;
 }
 
 const useLogin = () => {
-  return useMutation<LoginResponse, Error, LoginRequest>({
-    mutationFn: (data: LoginRequest) => {
-      return fetch(`${API_HOST}/auth/login`, {
+  return useMutation<string, Error, LoginRequest>({
+    mutationFn: async (data: LoginRequest) => {
+      const response = await fetch(`${API_HOST}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
         body: JSON.stringify(data),
-      }).then((response) => {
-        if (!response.ok) {
-          return Promise.reject(new Error("Login failed"));
-        }
-        return response.json();
       });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      return response.text();
     },
   });
 };

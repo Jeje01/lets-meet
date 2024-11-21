@@ -18,14 +18,14 @@ interface CalendarProps {
     [date: string]: string[];
   };
   selectedDate: string[];
-  updatedSelectedDate: (date: string) => void;
+  setSelectedDate: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Calendar: React.FC<CalendarProps> = ({
+export const Calendar: React.FC<CalendarProps> = ({
   period,
   votes,
   selectedDate,
-  updatedSelectedDate,
+  setSelectedDate,
 }) => {
   const startDate = new Date(period.start);
   const endDate = new Date(period.end);
@@ -41,7 +41,15 @@ const Calendar: React.FC<CalendarProps> = ({
   const handleDayClick = useCallback((day: Date) => {
     const formattedDate = format(day, "yyyy-MM-dd");
 
-    updatedSelectedDate(formattedDate);
+    setSelectedDate((prevSelectedDate: string[]) => {
+      if (prevSelectedDate.includes(formattedDate)) {
+        // 이미 선택된 날짜이면 제거
+        return prevSelectedDate.filter((date) => date !== formattedDate);
+      } else {
+        // 선택되지 않은 날짜이면 추가
+        return [...prevSelectedDate, formattedDate];
+      }
+    });
   }, []);
 
   const handlePrevMonth = useCallback(
@@ -131,5 +139,3 @@ const Calendar: React.FC<CalendarProps> = ({
     </div>
   );
 };
-
-export default Calendar;

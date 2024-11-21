@@ -9,7 +9,7 @@ interface DateVoterProps {
   voters: string[];
 }
 
-const DateVoter = ({ rank, date, voters }: DateVoterProps) => {
+export const DateVoter = ({ rank, date, voters }: DateVoterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -53,5 +53,3 @@ const DateVoter = ({ rank, date, voters }: DateVoterProps) => {
     </div>
   );
 };
-
-export default DateVoter;

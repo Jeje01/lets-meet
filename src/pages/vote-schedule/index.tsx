@@ -1,9 +1,17 @@
-import { Button, Input, Label, Modal, NavigationBar } from "@/components";
-import Calendar from "@/components/Calendar";
-import DateVoter from "@/components/DateVoters";
+import {
+  Button,
+  Calendar,
+  DateVoter,
+  Input,
+  Label,
+  Modal,
+  NavigationBar,
+  Toast,
+} from "@/components";
 import useGetSchedule from "@/queries/useGetSchedule";
 import useLogin from "@/queries/useLogin";
 import useUpdateSchedule from "@/queries/useUpdateSchedule";
+import { message } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -16,13 +24,14 @@ interface FormValues {
 const VoteSchedule = () => {
   const { query } = useRouter();
   const scheduleId = query.code as string;
-  const { data, isLoading, isError } = useGetSchedule(scheduleId);
+  const { data, isLoading, isError, refetch } = useGetSchedule(scheduleId);
   const { mutate: updateSchedule } = useUpdateSchedule();
   const { mutate: login } = useLogin();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string[]>([]);
   const [token, setToken] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -37,28 +46,22 @@ const VoteSchedule = () => {
       setToken(storedToken);
     }
   }, []);
-
-  const updatedSelectedDate = (date: string) => {
-    if (selectedDate.includes(date)) {
-      setSelectedDate((prevSelectedDate) =>
-        prevSelectedDate.filter((d) => d !== date),
-      );
-    } else {
-      setSelectedDate((prevSelectedDate) => [...prevSelectedDate, date]);
-    }
-  };
-
+  
   const handleUpdateSchedule = () => {
-    if (!selectedDate.length) return;
+    if (!selectedDate.length || !token) return;
 
     updateSchedule(
-      { id: scheduleId, votes: selectedDate },
+      { id: scheduleId, votes: selectedDate, token },
       {
         onSuccess: () => {
-          console.log("성공");
+          setShowToast(true);
+          refetch();
         },
         onError: (error) => {
-          console.error("error:", error.message);
+          message.error(`일정 업데이트 실패: ${error?.message}`);
+          localStorage.removeItem("token");
+          setToken(null);
+          setIsModalOpen(true);
         },
       },
     );
@@ -72,20 +75,20 @@ const VoteSchedule = () => {
         scheduleId,
       },
       {
-        onSuccess: (response) => {
-          const receivedToken = response.token;
-          console.log(receivedToken);
+        onSuccess: (receivedToken) => {
           setToken(receivedToken);
 
           if (typeof window !== "undefined") {
             localStorage.setItem("token", receivedToken);
           }
 
-          handleUpdateSchedule();
+          setTimeout(() => {
+            handleUpdateSchedule();
+          }, 0);
           setIsModalOpen(false);
         },
         onError: (error) => {
-          console.error("Login failed:", error.message);
+          message.error(`로그인 실패: ${error.message}`);
         },
       },
     );
@@ -121,7 +124,7 @@ const VoteSchedule = () => {
           }}
           votes={data.votes}
           selectedDate={selectedDate}
-          updatedSelectedDate={updatedSelectedDate}
+          setSelectedDate={setSelectedDate}
         />
         <div className="flex items-center justify-between">
           <Label text="투표 결과" />
@@ -187,6 +190,13 @@ const VoteSchedule = () => {
           />
         </div>
       </Modal>
+      {showToast && (
+        <Toast
+          message="투표를 완료했어요"
+          duration={3000}
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 };
