@@ -51,9 +51,9 @@ const CreateSchedule = () => {
   };
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] max-w-[420px] pb-[140px] w-full h-full min-h-fit">
+    <div className="bg-[#E8E6EF] max-w-[420px] pb-[140px] pt-[70px] w-full h-full min-h-fit">
       <NavigationBar title="일정 생성하기" />
-      <div className="px-[24px]">
+      <div className="px-[24px] h-full">
         <Label text="어떤 일정을 잡을까요?" />
         <Input
           placeholder="약속 이름을 알려주세요"
