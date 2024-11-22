@@ -11,10 +11,7 @@ export default function Home() {
   return (
     <div className="p-6 bg-[#FFF6E4] h-screen max-w-[420px]">
       <div className="float-right mb-20">
-        <Button
-          type="small"
-          handleClick={() => push("https://github.com/ROLIRA-inc")}
-        >
+        <Button type="small" handleClick={() => push("/about")}>
           About
         </Button>
       </div>
