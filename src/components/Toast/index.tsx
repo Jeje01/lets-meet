@@ -31,7 +31,7 @@ export const Toast = ({
 
   return (
     <div
-      className={`fixed inline-flex flex gap-[10px] bottom-[44px] left-1/2 transform -translate-x-1/2 pl-8 pr-14 py-5 text-black bg-white text-lg font-bold rounded-[50px] shadow-[0px_0px_12px_6px_rgba(0,0,0,0.2)] transition-all duration-300 ${
+      className={`z-30 fixed inline-flex flex gap-[10px] bottom-[44px] left-1/2 transform -translate-x-1/2 pl-8 pr-14 py-5 text-black bg-white text-lg font-bold rounded-[50px] shadow-[0px_0px_12px_6px_rgba(0,0,0,0.2)] transition-all duration-300 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       } whitespace-nowrap`}
     >

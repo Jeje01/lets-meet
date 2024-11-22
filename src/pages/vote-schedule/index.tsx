@@ -82,9 +82,7 @@ const VoteSchedule = () => {
             localStorage.setItem("token", receivedToken);
           }
 
-          setTimeout(() => {
-            handleUpdateSchedule();
-          }, 0);
+          handleUpdateSchedule();
           setIsModalOpen(false);
         },
         onError: (error) => {
@@ -102,6 +100,16 @@ const VoteSchedule = () => {
     }
   };
 
+  const votesPerDate = Object.values(data?.votes ?? {});
+
+
+  const votesSorted = Object.entries(data?.votes ?? {})
+    .filter(([, voters]) => voters.length > 0)
+    .sort(([, votersA], [, votersB]) => votersB.length - votersA.length);
+
+  const uniqueVoters = new Set(Object.values(data?.votes ?? {}).flat());
+  const totalUniqueVoters = uniqueVoters.size;
+
   if (isLoading) {
     return <p>로딩 중...</p>;
   }
@@ -111,10 +119,10 @@ const VoteSchedule = () => {
   }
 
   return (
-    <div className="pt-[70px] bg-[#E8E6EF] w-full max-w-[420px] h-full pb-[140px] min-h-fit">
+    <div className="pt-[50px] bg-[#E8E6EF] w-full max-w-[420px] h-full pb-[140px] min-h-fit">
       <NavigationBar title="일정 투표하기" />
       <div className="p-6">
-        <h1 className="text-[44px] mb-[44px] font-bold break-keep">
+        <h1 className="text-[40px] mb-[10px] font-bold break-keep">
           {data.scheduleName}
         </h1>
         <Calendar
@@ -125,22 +133,31 @@ const VoteSchedule = () => {
           votes={data.votes}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          totalVoters={totalUniqueVoters}
         />
         <div className="flex items-center justify-between">
           <Label text="투표 결과" />
           <p className="min-w-fit mt-[36px] mb-[12px] font-[400] text-[#797979] text-[12px]">
-            총 {Object.keys(data.votes).length}명 투표 완료
+            {totalUniqueVoters === 0
+              ? "투표자 없음"
+              : `총 ${totalUniqueVoters}명 투표 완료`}
           </p>
         </div>
-        {Object.keys(data.votes).map((date, index) => (
-          <DateVoter
-            key={date}
-            rank={index + 1}
-            date={date}
-            voters={data.votes[date]}
-            isAnonymous={!data.isNamedVote}
-          />
-        ))}
+        {votesSorted?.length ? (
+          votesSorted.map(([date, voters], index) => (
+            <DateVoter
+              key={date}
+              rank={index + 1}
+              date={date}
+              voters={voters}
+              isAnonymous={!data?.isNamedVote}
+            />
+          ))
+        ) : (
+          <div className="w-full max-w-md mx-auto bg-[#F3F1F8] rounded-lg shadow-md mb-3 p-4 text-[#868193] text-[16px]">
+            아직 투표자가 없습니다
+          </div>
+        )}
       </div>
       <Button
         type="regular"
@@ -192,6 +209,7 @@ const VoteSchedule = () => {
           />
         </div>
       </Modal>
+
       {showToast && (
         <Toast
           message="투표를 완료했어요"
@@ -199,6 +217,10 @@ const VoteSchedule = () => {
           onClose={() => setShowToast(false)}
         />
       )}
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[420px] h-[120px]">
+        <div className="absolute bottom-0 left-0 w-full h-[90px] bg-white"></div>
+        <div className="absolute top-0 left-0 w-full h-[30px] bg-gradient-to-t from-white to-transparent"></div>
+      </div>
     </div>
   );
 };

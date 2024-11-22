@@ -43,9 +43,10 @@ export const Button = ({
   return (
     <button
       type={htmlType}
-      className={`w-fit box-border flex justify-center items-center ${buttonStyle} ${disabled ? disabledStyle : ""}`}
+      className={`w-fit box-border flex z-10 justify-center items-center shadow-lg ${buttonStyle} ${disabled ? disabledStyle : ""}`}
       onClick={handleClick}
       style={style}
+      disabled={disabled}
     >
       {children}
     </button>

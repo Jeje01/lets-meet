@@ -16,7 +16,7 @@ import React, { useState } from "react";
 const CreateSchedule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { push } = useRouter();
-  const { mutate } = useCreateSchedule();
+  const { mutate, isPending } = useCreateSchedule();
 
   const [scheduleName, setScheduleName] = useState("");
   const [isNamedVote, setIsNamedVote] = useState(true);
@@ -51,7 +51,7 @@ const CreateSchedule = () => {
   };
 
   return (
-    <div className="bg-[#E8E6EF] max-w-[420px] pb-[140px] pt-[70px] w-full h-full min-h-fit">
+    <div className="bg-[#E8E6EF] max-w-[420px] pb-[140px] pt-[50px] w-full h-full min-h-fit">
       <NavigationBar title="일정 생성하기" />
       <div className="px-[24px] h-full min-h-fit">
         <Label text="어떤 일정을 잡을까요?" />
@@ -116,6 +116,10 @@ const CreateSchedule = () => {
           </p>
         </div>
       </Modal>
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[420px] h-[120px]">
+        <div className="absolute bottom-0 left-0 w-full h-[90px] bg-white"></div>
+        <div className="absolute top-0 left-0 w-full h-[30px] bg-gradient-to-t from-white to-transparent"></div>
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
   subMonths,
 } from "date-fns";
 import { ko } from "date-fns/locale";
+import Image from "next/image";
 import React, { useCallback, useMemo, useState } from "react";
 
 interface TermSelectorProps {
@@ -98,7 +99,7 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
               isSelectedStart || isSelectedEnd
                 ? "bg-[#FF570F] text-black rounded-full"
                 : isInRange
-                  ? "bg-[#FFDCCC] text-[#E53509] rounded-none"
+                  ? "bg-[#FFDCCC] text-[#E53509] rounded-none w-[100%]"
                   : ""
             } ${isToday ? "bg-white text-[#E53509] font-bold rounded-full" : ""}`}
             style={{
@@ -127,13 +128,23 @@ const TermSelector: React.FC<TermSelectorProps> = React.memo(
               onClick={handlePrevMonth}
               className="text-gray-600 hover:text-gray-800"
             >
-              {"<"}
+              <Image
+                src="/icons/chevron-left.png"
+                alt="이전 달"
+                width={24}
+                height={24}
+              />
             </button>
             <button
               onClick={handleNextMonth}
               className="text-gray-600 hover:text-gray-800"
             >
-              {">"}
+              <Image
+                src="/icons/chevron-right.png"
+                alt="이전 달"
+                width={24}
+                height={24}
+              />
             </button>
           </div>
         </div>

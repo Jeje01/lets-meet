@@ -7,6 +7,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
+import Image from "next/image";
 import React, { useCallback, useMemo, useState } from "react";
 
 interface CalendarProps {
@@ -19,6 +20,7 @@ interface CalendarProps {
   };
   selectedDate: string[];
   setSelectedDate: React.Dispatch<React.SetStateAction<string[]>>;
+  totalVoters: number;
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
@@ -26,6 +28,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   votes,
   selectedDate,
   setSelectedDate,
+  totalVoters,
 }) => {
   const startDate = new Date(period.start);
   const endDate = new Date(period.end);
@@ -77,7 +80,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       const isSelected = selectedDate.includes(formattedDate);
 
       const voteCount = votes[formattedDate]?.length || 0;
-      const saturation = Math.min(voteCount / 10, 1); // 최대 채도는 1
+      const saturation = Math.min(voteCount / totalVoters, 1);
       const backgroundColor = voteCount
         ? `rgba(255, 87, 15, ${saturation})`
         : "white";
@@ -120,13 +123,23 @@ export const Calendar: React.FC<CalendarProps> = ({
             onClick={handlePrevMonth}
             className="text-gray-600 hover:text-gray-800"
           >
-            {"<"}
+            <Image
+              src="/icons/chevron-left.png"
+              alt="이전 달"
+              width={24}
+              height={24}
+            />
           </button>
           <button
             onClick={handleNextMonth}
             className="text-gray-600 hover:text-gray-800"
           >
-            {">"}
+            <Image
+              src="/icons/chevron-right.png"
+              alt="이전 달"
+              width={24}
+              height={24}
+            />
           </button>
         </div>
       </div>
