@@ -21,7 +21,7 @@
 - 일정 참여자들이 투표를 진행합니다.
 - 일정 참여자들이 투표한 결과를 순위대로 확인합니다.
 
-<div style="display: flex; justify-content: space-between; gap: 10px;">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
     <img src="image.png" alt="첫화면" width="32%" />
     <img src="image-1.png" alt="일정생성" width="32%" />
     <img src="image-2.png" alt="투표결과" width="32%" />
