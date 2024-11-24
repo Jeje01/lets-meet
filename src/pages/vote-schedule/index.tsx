@@ -179,17 +179,17 @@ const VoteSchedule = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        buttonText="로그인하기"
+        buttonText="이름 설정하기"
         onButtonClick={handleSubmit(handleLoginAndUpdate)}
       >
-        <h2 className="text-xl font-bold mb-6">로그인하기</h2>
+        <h2 className="text-xl font-bold mb-6">이름 입력하기</h2>
         <div className="pb-[24px] flex flex-col gap-4">
           <Controller
             name="id"
             control={control}
             render={({ field }) => (
               <Input
-                placeholder="아이디"
+                placeholder="이름"
                 value={field.value}
                 setValue={field.onChange}
               />
@@ -200,13 +200,17 @@ const VoteSchedule = () => {
             control={control}
             render={({ field }) => (
               <Input
-                placeholder="비밀번호"
+                placeholder="임시 비밀번호"
                 value={field.value}
                 setValue={field.onChange}
                 password
               />
             )}
           />
+          <p className="text-[12px] text-[#797979]">
+            * 별도의 회원가입이 필요없습니다.
+            <br />* 임시 비밀번호는 수정 시에만 사용됩니다.
+          </p>
         </div>
       </Modal>
 
