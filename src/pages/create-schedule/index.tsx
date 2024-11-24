@@ -12,6 +12,7 @@ import { message } from "antd";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { event } from "@/lib/gtag";
 
 const CreateSchedule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +31,13 @@ const CreateSchedule = () => {
       message.error("모든 항목을 입력해주세요.");
       return;
     }
+
+    event({
+      action: "create_schedule",
+      category: "Schedule",
+      label: scheduleName,
+    });
+
     const payload = {
       scheduleName,
       isNamedVote,
@@ -71,7 +79,14 @@ const CreateSchedule = () => {
             bottom: 24,
             width: "calc(100% - 48px)",
           }}
-          handleClick={() => setIsModalOpen(true)}
+          handleClick={() => {
+            event({
+              action: "open_create_schedule_modal",
+              category: "Schedule",
+              label: scheduleName,
+            });
+            setIsModalOpen(true);
+          }}
           htmlType="button"
           disabled={!scheduleName || !period.startDate || !period.endDate}
         >
@@ -132,17 +147,26 @@ const ToggleButtons = React.memo(
     isNamedVote: boolean;
     onToggle: (value: boolean) => void;
   }) => {
+    const handleToggle = (value: boolean) => {
+      event({
+        action: "toggle_vote_type",
+        category: "Schedule",
+        label: value ? "named" : "anonymous",
+      });
+      onToggle(value);
+    };
+
     return (
       <div className="flex w-full gap-[10px]">
         <ToggleButton
           text="기명 투표"
           clicked={isNamedVote}
-          onClick={() => onToggle(true)}
+          onClick={() => handleToggle(true)}
         />
         <ToggleButton
           text="익명 투표"
           clicked={!isNamedVote}
-          onClick={() => onToggle(false)}
+          onClick={() => handleToggle(false)}
         />
       </div>
     );
