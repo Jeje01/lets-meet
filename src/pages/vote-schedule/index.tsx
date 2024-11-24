@@ -25,8 +25,9 @@ const VoteSchedule = () => {
   const { query } = useRouter();
   const scheduleId = query.code as string;
   const { data, isLoading, isError, refetch } = useGetSchedule(scheduleId);
-  const { mutate: updateSchedule } = useUpdateSchedule();
-  const { mutate: login } = useLogin();
+  const { mutate: updateSchedule, mutateAsync: updateScheduleMutateAsync } =
+    useUpdateSchedule();
+  const { mutate: login, mutateAsync: loginMutateAsync } = useLogin();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string[]>([]);
@@ -47,49 +48,51 @@ const VoteSchedule = () => {
     }
   }, []);
 
-  const handleUpdateSchedule = () => {
+  const handleUpdateSchedule = async () => {
     if (!selectedDate.length || !token) return;
 
-    updateSchedule(
-      { id: scheduleId, votes: selectedDate, token },
-      {
-        onSuccess: () => {
-          setShowToast(true);
-          refetch();
-        },
-        onError: (error) => {
-          message.error(`일정 업데이트 실패: ${error?.message}`);
-          localStorage.removeItem("token");
-          setToken(null);
-          setIsModalOpen(true);
-        },
-      },
-    );
+    try {
+      await updateScheduleMutateAsync({
+        id: scheduleId,
+        votes: selectedDate,
+        token,
+      });
+      setShowToast(true);
+      refetch();
+      setSelectedDate([]);
+    } catch (error: any) {
+      message.error(
+        `일정 업데이트 실패: ${error?.message || "알 수 없는 오류"}`,
+      );
+      localStorage.removeItem("token");
+      setToken(null);
+      setIsModalOpen(true);
+    }
   };
 
-  const handleLoginAndUpdate = (formData: FormValues) => {
-    login(
-      {
+  const handleLoginAndUpdate = async (formData: FormValues) => {
+    try {
+      // login을 Promise 기반으로 처리
+      const receivedToken = await loginMutateAsync({
         username: formData.id,
         password: formData.password,
         scheduleId,
-      },
-      {
-        onSuccess: (receivedToken) => {
-          setToken(receivedToken);
+      });
 
-          if (typeof window !== "undefined") {
-            localStorage.setItem("token", receivedToken);
-          }
+      // 로그인 성공 시 토큰 저장
+      setToken(receivedToken);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", receivedToken);
+      }
 
-          handleUpdateSchedule();
-          setIsModalOpen(false);
-        },
-        onError: (error) => {
-          message.error(`로그인 실패: ${error.message}`);
-        },
-      },
-    );
+      // 로그인 성공 후 일정 업데이트 실행
+      await handleUpdateSchedule();
+
+      setIsModalOpen(false);
+    } catch (error) {
+      // 에러 처리
+      message.error("로그인 실패");
+    }
   };
 
   const handleButtonClick = () => {
@@ -101,7 +104,6 @@ const VoteSchedule = () => {
   };
 
   const votesPerDate = Object.values(data?.votes ?? {});
-
 
   const votesSorted = Object.entries(data?.votes ?? {})
     .filter(([, voters]) => voters.length > 0)
