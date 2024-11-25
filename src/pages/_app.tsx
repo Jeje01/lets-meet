@@ -48,7 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <Component {...pageProps} />
-          <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+          <GoogleAnalytics gaId="G-XGVMSP4MW6" />
         </ConfigProvider>
       </QueryClientProvider>
     </AntdRegistry>
