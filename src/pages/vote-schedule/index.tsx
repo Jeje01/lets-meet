@@ -33,6 +33,7 @@ const VoteSchedule = () => {
   const [selectedDate, setSelectedDate] = useState<string[]>([]);
   const [token, setToken] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [currentDateVoters, setCurrentDateVoters] = useState<string[]>([]);
 
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -48,14 +49,14 @@ const VoteSchedule = () => {
     }
   }, []);
 
-  const handleUpdateSchedule = async () => {
-    if (!selectedDate.length || !token) return;
+  const handleUpdateSchedule = async (currentToken?: string) => {
+    if (!selectedDate.length || (!token && !currentToken)) return;
 
     try {
       await updateScheduleMutateAsync({
         id: scheduleId,
         votes: selectedDate,
-        token,
+        token: currentToken || token || "",
       });
       setShowToast(true);
       refetch();
@@ -72,25 +73,21 @@ const VoteSchedule = () => {
 
   const handleLoginAndUpdate = async (formData: FormValues) => {
     try {
-      // login을 Promise 기반으로 처리
       const receivedToken = await loginMutateAsync({
         username: formData.id,
         password: formData.password,
         scheduleId,
       });
 
-      // 로그인 성공 시 토큰 저장
       setToken(receivedToken);
       if (typeof window !== "undefined") {
         localStorage.setItem("token", receivedToken);
       }
 
-      // 로그인 성공 후 일정 업데이트 실행
-      await handleUpdateSchedule();
+      await handleUpdateSchedule(receivedToken);
 
       setIsModalOpen(false);
     } catch (error) {
-      // 에러 처리
       message.error("로그인 실패");
     }
   };
@@ -136,7 +133,15 @@ const VoteSchedule = () => {
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           totalVoters={totalUniqueVoters}
+          scheduleId={scheduleId}
+          setCurrentDateVoters={setCurrentDateVoters}
         />
+        <div>
+          <p className="min-w-fit mt-[18px] font-[400] text-[#797979] text-[12px]">
+            이 날 투표자 :{" "}
+            {currentDateVoters?.length ? currentDateVoters.join(", ") : "없음"}
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <Label text="투표 결과" />
           <p className="min-w-fit mt-[36px] mb-[12px] font-[400] text-[#797979] text-[12px]">

@@ -1,3 +1,4 @@
+import useGetSchedule from "@/queries/useGetSchedule";
 import {
   addDays,
   endOfMonth,
@@ -21,6 +22,8 @@ interface CalendarProps {
   selectedDate: string[];
   setSelectedDate: React.Dispatch<React.SetStateAction<string[]>>;
   totalVoters: number;
+  scheduleId: string;
+  setCurrentDateVoters: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
@@ -29,12 +32,14 @@ export const Calendar: React.FC<CalendarProps> = ({
   selectedDate,
   setSelectedDate,
   totalVoters,
+  scheduleId,
+  setCurrentDateVoters,
 }) => {
   const startDate = new Date(period.start);
   const endDate = new Date(period.end);
 
   const [currentMonth, setCurrentMonth] = useState<Date>(startDate);
-
+  const { data: scheduleData } = useGetSchedule(scheduleId);
   const normalizeDate = useCallback((date: Date) => {
     const normalized = new Date(date);
     normalized.setHours(0, 0, 0, 0);
@@ -43,6 +48,10 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   const handleDayClick = useCallback((day: Date) => {
     const formattedDate = format(day, "yyyy-MM-dd");
+
+    if (scheduleData?.votes[formattedDate]) {
+      setCurrentDateVoters(scheduleData.votes[formattedDate]);
+    }
 
     setSelectedDate((prevSelectedDate: string[]) => {
       if (prevSelectedDate.includes(formattedDate)) {
