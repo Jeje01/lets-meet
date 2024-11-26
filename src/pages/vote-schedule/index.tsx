@@ -119,7 +119,7 @@ const VoteSchedule = () => {
 
   return (
     <div className="pt-[50px] bg-[#E8E6EF] w-full max-w-[420px] h-full pb-[140px] min-h-fit">
-      <NavigationBar title="일정 투표하기" />
+      <NavigationBar title="일정 투표하기" showBackButton={false} />
       <div className="p-6">
         <h1 className="text-[40px] mb-[10px] font-bold break-keep">
           {data.scheduleName}
