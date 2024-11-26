@@ -1,15 +1,23 @@
 "use client";
 
 import { Button, Input } from "@/components";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
 export default function Home() {
   const { push } = useRouter();
   const [value, setValue] = useState("");
   return (
     <div className="p-6 bg-[#FFF6E4] h-screen max-w-[420px]">
+      <Head>
+        <title>{`Let's Meet`}</title>
+        <meta name="description" content="모두의 일정을 한 곳에서" />
+        <meta property="og:title" content={`Let's Meet`} />
+        <meta property="og:description" content="모두의 일정을 한 곳에서" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://letsmeet.kr/img/main.png" />
+      </Head>
       <div className="float-right mb-20">
         <Button type="small" handleClick={() => push("/about")}>
           About

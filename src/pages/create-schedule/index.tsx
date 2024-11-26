@@ -11,6 +11,7 @@ import { event } from "@/lib/gtag";
 import useCreateSchedule from "@/queries/useCreateSchedule";
 import { message } from "antd";
 import { format } from "date-fns";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -60,6 +61,14 @@ const CreateSchedule = () => {
 
   return (
     <div className="bg-[#E8E6EF] max-w-[420px] pb-[140px] pt-[50px] w-full h-full min-h-fit">
+      <Head>
+        <title>일정 생성하기</title>
+        <meta name="description" content="일정을 생성합니다." />
+        <meta property="og:title" content="일정 생성하기" />
+        <meta property="og:description" content="일정을 생성합니다." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://letsmeet.kr/img/main.png" />
+      </Head>
       <NavigationBar title="일정 생성하기" />
       <div className="px-[24px] h-full min-h-fit">
         <Label text="어떤 일정을 잡을까요?" />
