@@ -109,11 +109,41 @@ const VoteSchedule = () => {
   const totalUniqueVoters = uniqueVoters.size;
 
   if (isLoading) {
-    return <p>로딩 중...</p>;
+    return (
+      <>
+        <Head>
+          <title>일정 투표하기</title>
+          <meta name="description" content="일정 투표를 진행합니다." />
+          <meta property="og:title" content="일정 투표하기" />
+          <meta property="og:description" content="일정 투표를 진행합니다." />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:image"
+            content="https://letsmeet.kr/img/main.png"
+          />
+        </Head>
+        <p>로딩 중...</p>
+      </>
+    );
   }
 
   if (isError || !data) {
-    return <p>일정 없음</p>;
+    return (
+      <>
+        <Head>
+          <title>일정 없음</title>
+          <meta name="description" content="존재하지 않는 일정입니다." />
+          <meta property="og:title" content="일정 없음" />
+          <meta property="og:description" content="존재하지 않는 일정입니다." />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:image"
+            content="https://letsmeet.kr/img/main.png"
+          />
+        </Head>
+        <p>일정 없음</p>
+      </>
+    );
   }
 
   return (
