@@ -37,25 +37,6 @@ export default function Home() {
 
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://letsmeet.kr" />
-        <html lang="ko" />
-
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "Let's Meet - 일정 잡기 서비스",
-            description: "모임 참석자들의 일정을 손쉽게 조율하는 서비스",
-            url: "https://letsmeet.kr",
-            applicationCategory: "SchedulingTool",
-            operatingSystem: "Web",
-            keywords: "일정 잡기, 약속 잡기, 일정 조율, 모임 일정",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "KRW",
-            },
-          })}
-        </script>
       </Head>
       <div className="float-right mb-20">
         <Button type="small" handleClick={() => push("/about")}>
