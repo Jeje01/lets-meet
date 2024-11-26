@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider } from "antd";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import Script from "next/script";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <AntdRegistry>
       <Script
         async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4630273089107228"
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
