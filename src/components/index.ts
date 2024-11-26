@@ -4,6 +4,7 @@ export * from "./Calendar";
 export * from "./DateVoters";
 export * from "./Input";
 export * from "./Label";
+export * from "./Loading";
 export * from "./Modal";
 export * from "./Navigation";
 export * from "./NumberTag";

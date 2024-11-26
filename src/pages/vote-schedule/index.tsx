@@ -4,6 +4,7 @@ import {
   DateVoter,
   Input,
   Label,
+  Loading,
   Modal,
   NavigationBar,
   Toast,
@@ -89,7 +90,7 @@ const VoteSchedule = () => {
 
       setIsModalOpen(false);
     } catch (error) {
-      message.error("로그인 실패");
+      message.error("로그인을 다시 해주세요.");
     }
   };
 
@@ -122,7 +123,7 @@ const VoteSchedule = () => {
             content="https://letsmeet.kr/img/main.png"
           />
         </Head>
-        <p>로딩 중...</p>
+        <Loading />
       </>
     );
   }
