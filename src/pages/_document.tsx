@@ -1,10 +1,12 @@
-import { Head, Html, Main, NextScript } from "next/document";
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en" style={{ backgroundColor: "white" }}>
-      <Head />
-      <body style={{ backgroundColor: "white" }}>
+    <Html lang="ko">
+      <Head>
+        <meta name="google-adsense-account" content="ca-pub-4630273089107228" />
+      </Head>
+      <body>
         <Main />
         <NextScript />
       </body>
