@@ -7,12 +7,12 @@ import {
   ToggleButton,
 } from "@/components";
 import TermSelector from "@/components/TermSelector";
+import { event } from "@/lib/gtag";
 import useCreateSchedule from "@/queries/useCreateSchedule";
 import { message } from "antd";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { event } from "@/lib/gtag";
 
 const CreateSchedule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

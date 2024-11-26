@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Script from "next/script";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AntdRegistry>
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
       <QueryClientProvider client={queryClient}>
         <ConfigProvider
           theme={{
@@ -48,7 +55,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <Component {...pageProps} />
-          <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+          <GoogleAnalytics gaId="G-XGVMSP4MW6" />
         </ConfigProvider>
       </QueryClientProvider>
     </AntdRegistry>
